@@ -9,7 +9,6 @@ import morph.api.Ability;
 import morph.client.entity.EntityMorphAcquisition;
 import morph.client.morph.MorphInfoClient;
 import morph.common.Morph;
-import morph.common.ability.mod.AbilityServerSupport;
 import morph.common.ability.mod.AbilitySupport;
 import morph.common.morph.MorphHandler;
 import morph.common.morph.MorphInfo;
@@ -193,7 +192,7 @@ public class MapPacketHandler
 				}
 				case 3:
 				{
-					AbilityServerSupport.build(stream.readUTF()).mapAbilities();
+					AbilitySupport.build(stream.readUTF()).mapAbilities();
 					break;
 				}
 			}

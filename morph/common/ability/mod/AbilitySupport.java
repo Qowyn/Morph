@@ -19,29 +19,42 @@ import com.google.gson.Gson;
 public class AbilitySupport {
 	
 	private static final String jsonPath = "/assets/morph/mod/ModMobSupport.json";
-	public static AbilitySupport instance = null;
 	private HashMap<String, String[]> customMobAbilityMapping = new HashMap<String, String[]>();
 
-	public static AbilitySupport getInstance(){
-		if(instance == null){
-			Gson gson = new Gson();
-			try{
-				Reader fileIn = new InputStreamReader(new URL("https://raw.github.com/iChun/Morph/master" + jsonPath).openStream());
+	public static AbilitySupport buildDefault(){
+		AbilitySupport instance;
+		Gson gson = new Gson();
+		try{
+			Reader fileIn = new InputStreamReader(new URL("https://raw.github.com/iChun/Morph/master" + jsonPath).openStream());
+			instance = gson.fromJson(fileIn, AbilitySupport.class);
+		}catch(Exception e){
+			e.printStackTrace();
+			try
+			{
+				Reader fileIn = new InputStreamReader(Morph.class.getResourceAsStream(jsonPath));
 				instance = gson.fromJson(fileIn, AbilitySupport.class);
-			}catch(Exception e){
-				e.printStackTrace();
-				try
-				{
-					Reader fileIn = new InputStreamReader(Morph.class.getResourceAsStream(jsonPath));
-					instance = gson.fromJson(fileIn, AbilitySupport.class);
-				}
-				catch(Exception e1)
-				{
-					e1.printStackTrace();
-					instance = new AbilitySupport();
-				}
+			}
+			catch(Exception e1)
+			{
+				e1.printStackTrace();
+				instance = new AbilitySupport();
 			}
 		}
+			
+		return instance;
+	}
+	
+	public static AbilitySupport build(String src){
+		AbilitySupport instance;
+		Gson gson = new Gson();
+		try{
+			Reader fileIn = new InputStreamReader(new ByteArrayInputStream(src.getBytes("UTF-8")));
+			instance = gson.fromJson(fileIn, AbilitySupport.class);
+		}catch(Exception e){
+			e.printStackTrace();
+			instance = new AbilitySupport();
+		}
+		
 		return instance;
 	}
 	

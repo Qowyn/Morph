@@ -131,12 +131,10 @@ public class Morph
 
 		configFolder = event.getModConfigurationDirectory();
 		
-		Morph.console("Test", false);
 		File modMobSupportFile = new File(configFolder, "ModMobSupport.json");
 		if (modMobSupportFile.exists() && modMobSupportFile.canRead()) {
-			 try {
+			try {
 				serverCustomAbilities = new String(Files.toByteArray(modMobSupportFile), "UTF-8");
-				Morph.console("Successfully loaded additional mob Support", false);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
