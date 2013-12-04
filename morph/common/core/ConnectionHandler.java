@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import morph.common.Morph;
 import morph.common.ability.AbilityHandler;
+import morph.common.ability.mod.AbilitySupport;
 import morph.common.morph.MorphHandler;
 import morph.common.morph.MorphInfo;
 import morph.common.morph.MorphState;
@@ -73,6 +74,7 @@ public class ConnectionHandler
 		{
 			Morph.proxy.tickHandlerClient.playerMorphInfo.clear();
 			Morph.proxy.tickHandlerClient.playerMorphCatMap.clear();
+			AbilityHandler.clearServerEntities();
 		}
 	}
 
@@ -82,6 +84,20 @@ public class ConnectionHandler
 	public void onPlayerLogin(EntityPlayer player) 
 	{
 		Morph.proxy.tickHandlerServer.updateSession(player);
+		
+		if (Morph.serverCustomAbilities != null) {
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			DataOutputStream stream = new DataOutputStream(bytes);
+			try
+			{
+				stream.writeUTF(Morph.serverCustomAbilities);
+				
+				PacketDispatcher.sendPacketToPlayer(new Packet131MapData((short)Morph.getNetId(), (short)3, bytes.toByteArray()), (Player)player);
+			}
+			catch(IOException e)
+			{
+			}
+		}
 		
 		ArrayList list = Morph.proxy.tickHandlerServer.getPlayerMorphs(player.worldObj, player.username);
 		

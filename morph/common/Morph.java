@@ -6,9 +6,12 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.google.common.io.Files;
 
 import morph.client.core.ClientProxy;
 import morph.client.core.PacketHandlerClient;
@@ -76,6 +79,8 @@ public class Morph
 	public static int playerMorphs;
 	public static int bossMorphs;
 	
+	public static String serverCustomAbilities;
+	
 	public static String blacklistedMobs;
 	
 	public static String whitelistedPlayers;
@@ -125,6 +130,19 @@ public class Morph
 		boolean isClient = proxy instanceof ClientProxy;
 
 		configFolder = event.getModConfigurationDirectory();
+		
+		Morph.console("Test", false);
+		File modMobSupportFile = new File(configFolder, "ModMobSupport.json");
+		if (modMobSupportFile.exists() && modMobSupportFile.canRead()) {
+			 try {
+				serverCustomAbilities = new String(Files.toByteArray(modMobSupportFile), "UTF-8");
+				Morph.console("Successfully loaded additional mob Support", false);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();

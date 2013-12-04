@@ -9,6 +9,8 @@ import morph.api.Ability;
 import morph.client.entity.EntityMorphAcquisition;
 import morph.client.morph.MorphInfoClient;
 import morph.common.Morph;
+import morph.common.ability.mod.AbilityServerSupport;
+import morph.common.ability.mod.AbilitySupport;
 import morph.common.morph.MorphHandler;
 import morph.common.morph.MorphInfo;
 import morph.common.morph.MorphState;
@@ -187,6 +189,11 @@ public class MapPacketHandler
 					SessionState.canSleepMorphed = stream.readBoolean();
 					SessionState.allowMorphSelection = stream.readBoolean();
 					SessionState.allowFlight = stream.readBoolean();
+					break;
+				}
+				case 3:
+				{
+					AbilityServerSupport.build(stream.readUTF()).mapAbilities();
 					break;
 				}
 			}

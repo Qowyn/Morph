@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 
 import morph.client.core.TickHandlerClient;
 import morph.common.Morph;
+import morph.common.ability.AbilityHandler;
+import morph.common.ability.mod.AbilityServerSupport;
 import morph.common.ability.mod.AbilitySupport;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.command.ICommandManager;
@@ -86,6 +88,12 @@ public class CommonProxy
 		if(Morph.modAbilityPatch == 1)
 		{
 			AbilitySupport.getInstance().mapAbilities();
+		}
+		
+		AbilityHandler.lockBuiltinEntities();
+		
+		if(Morph.serverCustomAbilities != null) {
+			AbilityServerSupport.build(Morph.serverCustomAbilities);
 		}
 	}
 	

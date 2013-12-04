@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -49,6 +51,7 @@ public class AbilityHandler
 	public final static HashMap<Class<? extends EntityLivingBase>, ArrayList<Ability>> abilityMap = new HashMap<Class<? extends EntityLivingBase>, ArrayList<Ability>>();
 	public final static HashMap<String, Class<? extends Ability>> stringToClassMap = new HashMap<String, Class<? extends Ability>>();
 	public final static ArrayList<Class<? extends EntityLivingBase>> abilityClassList = new ArrayList<Class<? extends EntityLivingBase>>();
+	public final static HashSet<Class<? extends EntityLivingBase>> builtinEntities = new HashSet<Class<? extends EntityLivingBase>>();
 	
 	static
 	{
@@ -129,6 +132,19 @@ public class AbilityHandler
 			if(!added)
 			{
 				abilityList.add(ability);
+			}
+		}
+	}
+	
+	public static void lockBuiltinEntities() {
+		builtinEntities.addAll(abilityMap.keySet());
+	}
+	
+	public static void clearServerEntities() {
+		Iterator<Class<? extends EntityLivingBase>> iter = abilityMap.keySet().iterator();
+		while (iter.hasNext()) {
+			if (!builtinEntities.contains(iter.next())) {
+				iter.remove();
 			}
 		}
 	}
